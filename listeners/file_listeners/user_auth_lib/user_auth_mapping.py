@@ -1,4 +1,4 @@
-from utils.fields_mapping import FieldsMapping
+from listeners.mappings.fields_mapping import FieldsMapping
 
 
 class UserAuthMapping(FieldsMapping):

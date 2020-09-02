@@ -48,8 +48,8 @@ class AcmeListener(ListenerBase):
         }
     ]
 
-    def __init__(self, start_signal_event: Event):
-        super().__init__(start_signal_event)
+    def __init__(self, start_signal_event: Event, daily_frequency: int = 1):
+        super().__init__(start_signal_event, daily_frequency=daily_frequency)
         self.last_end_date = None
         self.acme_user = 'BBB'
         self.acme_secret = "GLOAT_INTEGRATION"
@@ -80,4 +80,3 @@ class AcmeListener(ListenerBase):
         if not users_json:
             logging.warning('empty users json')
             return
-

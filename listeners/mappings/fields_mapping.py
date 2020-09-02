@@ -1,8 +1,8 @@
-import json
 import logging
 from typing import Union, List, Dict, Set
 
-from utils.user_info_fields import UserInfoFields
+from common.type_hints import JSONType
+from listeners.mappings.user_info_fields import UserInfoFields
 
 
 class FieldsMapping:
@@ -39,7 +39,7 @@ class FieldsMapping:
     GRADE_ATTR = "Grade level"
     LEADER_ATTR = "People_Leader"
 
-    def get(self, field: UserInfoFields, user_data: json) -> Union[str, int, bool, List[str], json]:
+    def get(self, field: UserInfoFields, user_data: JSONType) -> Union[str, int, bool, List[str], JSONType]:
         try:
             if field == UserInfoFields.DEPARTMENT or field == UserInfoFields.EXTRA_DATA:
                 if field not in self.fields_mappings:

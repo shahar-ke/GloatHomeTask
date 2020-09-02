@@ -1,5 +1,4 @@
 import datetime
-import json
 import logging
 from abc import ABC, abstractmethod
 from multiprocessing import Event
@@ -7,9 +6,10 @@ from multiprocessing.context import Process
 from time import sleep
 from typing import Optional, List
 
+from common.type_hints import JSONType
 from listeners.listener_state import ListenerState
+from listeners.mappings.user_info_generator import UserInfoGenerator
 from server_lib.gloat_server_sdk import GloatServerSDK
-from utils.user_info_generator import UserInfoGenerator
 
 
 class ListenerBase(Process, ABC):
@@ -51,10 +51,10 @@ class ListenerBase(Process, ABC):
         self.send_whitelist(gloat_users_info)
 
     @abstractmethod
-    def fetch_users_data(self) -> List[json]:
+    def fetch_users_data(self) -> List[JSONType]:
         raise NotImplementedError()
 
-    def map_raw_data(self, users_raw_data) -> List[json]:
+    def map_raw_data(self, users_raw_data) -> List[JSONType]:
         mapping = self.get_mapping()
         gloat_users_info = [UserInfoGenerator.generate_from_json(user_data, mapping) for user_data in users_raw_data]
         gloat_users_info = [user_info for user_info in gloat_users_info if user_info is not None]
@@ -66,7 +66,7 @@ class ListenerBase(Process, ABC):
 
     def send_whitelist(self, gloat_users_info):
         try:
-            gloat_server_sdk = GloatServerSDK(client_id="ABCD", client_secret='password')
+            gloat_server_sdk = GloatServerSDK(client_id="ABCD", client_secret='GLOAT2020')
             response = gloat_server_sdk.update_white_list(users_info=gloat_users_info)
             if response.code != 201:
                 logging.error(f'got {response.code} from server trying to send {gloat_users_info=}')

@@ -1,7 +1,7 @@
 import json
 
-from utils.user_info_fields import UserInfoFields
-from utils.fields_mapping import FieldsMapping
+from listeners.mappings.user_info_fields import UserInfoFields
+from listeners.mappings.fields_mapping import FieldsMapping
 
 
 class UserInfoGenerator:
