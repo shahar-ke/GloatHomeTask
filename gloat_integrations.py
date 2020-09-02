@@ -11,7 +11,7 @@ from listeners.file_listeners.user_auth_lib.user_auth_file_listener import UserA
 from server_lib.blueprints.app_users import app_users
 from server_lib.models.database import db
 from server_lib.models.user_model import User
-
+logging.root.setLevel(level=logging.INFO)
 
 def create_app():
     app = Flask(__name__)
@@ -43,7 +43,7 @@ def start_listeners():
     gloat_json_listener = AcmeListener(start_signal_event=start_signal, daily_frequency=1)
     for listener in [gloat_file_listener, gloat_json_listener]:
         listener.start()
-
+    start_signal.set()
 
 def main():
     app = create_app()

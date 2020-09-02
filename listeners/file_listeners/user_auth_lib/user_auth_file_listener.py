@@ -2,6 +2,8 @@ import os
 from multiprocessing import Event
 from typing import List
 
+import pandas as pd
+
 from common.type_hints import JSONType
 from listeners.file_listeners.user_auth_lib.user_auth_mapping import UserAuthMapping
 from listeners.listener_base import ListenerBase
@@ -23,7 +25,9 @@ class UserAuthFileListener(ListenerBase):
             if file_name in self.processed_files:
                 continue
             file_path = os.path.join(self.UPLOAD_PATH, file_name)
-
+            df = pd.read_csv(file_path)
+            res = df.to_json(orient='records')
+            return res
 
     def get_mapping(self):
         return UserAuthMapping()

@@ -1,9 +1,12 @@
 import datetime
 import logging
 from multiprocessing import Event
+from typing import List
 
 import requests
 
+from common.type_hints import JSONType
+from listeners.client_listeners.acme_lib.acme_mapping import AcmeMapping
 from listeners.listener_base import ListenerBase
 
 
@@ -55,11 +58,12 @@ class AcmeListener(ListenerBase):
         self.acme_secret = "GLOAT_INTEGRATION"
         self.acme_url = 'https://acme.com/api/v1/authorized-users'
 
-    def listen(self):
-        users_json = self.get_json()
-        self.process_users_json(users_json)
+    def process_users_json(self, users_json):
+        if not users_json:
+            logging.warning('empty users json')
+            return
 
-    def get_json(self):
+    def fetch_users_data(self) -> List[JSONType]:
         if not self.last_end_date:
             self.last_end_date = datetime.datetime.now() - self.frequency_delta
         from_date = self.last_end_date
@@ -76,7 +80,5 @@ class AcmeListener(ListenerBase):
             logging.info('returning default json')
             return self.DEFAULT_JSON
 
-    def process_users_json(self, users_json):
-        if not users_json:
-            logging.warning('empty users json')
-            return
+    def get_mapping(self):
+        return AcmeMapping()
