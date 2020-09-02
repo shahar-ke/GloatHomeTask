@@ -8,6 +8,7 @@ from time import sleep
 from typing import Optional, List
 
 from listeners.listener_state import ListenerState
+from server_lib.gloat_server_sdk import GloatServerSDK
 from utils.user_info_generator import UserInfoGenerator
 
 
