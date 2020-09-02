@@ -64,5 +64,11 @@ class ListenerBase(Process, ABC):
         raise NotImplementedError()
 
     def send_whitelist(self, gloat_users_info):
-        gloat_server_sdk = GloatServerSDK(client_id="ABCD", client_secret='password')
-        response = gloat_server_sdk.update_white_list()
+        try:
+            gloat_server_sdk = GloatServerSDK(client_id="ABCD", client_secret='password')
+            response = gloat_server_sdk.update_white_list(users_info=gloat_users_info)
+            if response.code != 201:
+                logging.error(f'got {response.code} from server trying to send {gloat_users_info=}')
+        except Exception as e:
+            logging.exception(e)
+            logging.error(f'failed trying to send to server {gloat_users_info}')
