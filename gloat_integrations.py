@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 import logging
 from multiprocessing import Event
-from time import sleep
 
 from flask import Flask
+from multiprocessing_logging import install_mp_handler
 
+install_mp_handler()
 from listeners.client_listeners.acme_lib.acme_listener import AcmeListener
 from listeners.file_listeners.user_auth_lib.user_auth_file_listener import UserAuthFileListener
 from server_lib.blueprints.app_users import app_users
@@ -42,20 +43,13 @@ def start_listeners():
     gloat_json_listener = AcmeListener(start_signal_event=start_signal, daily_frequency=1)
     for listener in [gloat_file_listener, gloat_json_listener]:
         listener.start()
-        logging.info('sleep 5')
-        sleep(2)
-        start_signal.set()
-        logging.info('sleep 5 done')
-    while True:
-        logging.info('sleepy')
-        sleep(5)
 
 
 def main():
     app = create_app()
     setup_database(app)
     app.register_blueprint(app_users)
-    # start_listeners()
+    start_listeners()
     app.run(debug=True)
 
 

@@ -8,7 +8,6 @@ from listeners.listener_base import ListenerBase
 
 
 class UserAuthFileListener(ListenerBase):
-
     UPLOAD_PATH = 'upload'
     FILES_PREFIX = 'auth-users'
 
@@ -24,7 +23,6 @@ class UserAuthFileListener(ListenerBase):
             if file_name in self.processed_files:
                 continue
             file_path = os.path.join(self.UPLOAD_PATH, file_name)
-
 
 
     def get_mapping(self):
