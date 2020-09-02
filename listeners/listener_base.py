@@ -1,12 +1,14 @@
 import datetime
+import json
 import logging
 from abc import ABC, abstractmethod
 from multiprocessing import Event
 from multiprocessing.context import Process
 from time import sleep
-from typing import Optional
+from typing import Optional, List
 
 from listeners.listener_state import ListenerState
+from utils.user_info_generator import UserInfoGenerator
 
 
 class ListenerBase(Process, ABC):
@@ -42,6 +44,25 @@ class ListenerBase(Process, ABC):
             self.error = e
             self.state = ListenerState.ERROR
 
-    @abstractmethod
     def listen(self):
-        raise NotADirectoryError()
+        users_raw_data = self.fetch_users_data()
+        gloat_users_info = self.map_raw_data(users_raw_data=users_raw_data)
+        self.send_whitelist(gloat_users_info)
+
+    @abstractmethod
+    def fetch_users_data(self) -> List[json]:
+        raise NotImplementedError()
+
+    def map_raw_data(self, users_raw_data) -> List[json]:
+        mapping = self.get_mapping()
+        gloat_users_info = [UserInfoGenerator.generate_from_json(user_data, mapping) for user_data in users_raw_data]
+        gloat_users_info = [user_info for user_info in gloat_users_info if user_info is not None]
+        return gloat_users_info
+
+    @abstractmethod
+    def get_mapping(self):
+        raise NotImplementedError()
+
+    def send_whitelist(self, gloat_users_info):
+        gloat_server_sdk = GloatServerSDK(client_id="ABCD", client_secret='password')
+        response = gloat_server_sdk.update_white_list()
