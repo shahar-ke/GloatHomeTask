@@ -1,0 +1,3 @@
+UserId,First_name,Last_name,Email_Id,Manager_userId,Manager_email,Grade level,Department level 1,Department level 2,Department level 3,Title,Division,Location,City,Country,Business_unit
+A1B2C3,Mike,Ross,mike.r@gloat.com,456,Harvey.S@gloat.com,8, Human resources,SK708,HR Ops & Delivery,HR,Human resources,"Bangalore, India",Bangalore,IND,HR Manager
+A2B3C4,Donna,Paulson,donna.p@gloat.com,456,Harvey.S@gloat.com,5,Human resources,SK708,HR Ops & Delivery,HR recruiter,Human resources,"Bangalore, India",Bangalore,IND,HR
